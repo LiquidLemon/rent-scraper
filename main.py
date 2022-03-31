@@ -1,3 +1,4 @@
+import argparse
 import os
 from datetime import datetime
 import sqlite3
@@ -90,6 +91,10 @@ def pushbullet_send(url: str):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--notify", action=argparse.BooleanOptionalAction)
+    args = parser.parse_args()
+
     url = "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/?search%5Bdistrict_id%5D=99"
     # url = "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/?search%5Bdist%5D=2&search%5Bdistrict_id%5D=99"
     offers = get_olx_offers(url)
@@ -100,10 +105,15 @@ def main():
     missing = filter_missing_offers(db, offers)
     save_offers(db, missing)
 
-    for url in missing:
-        pushbullet_send(url)
-
     print(f"New offers: {len(missing)}.")
+
+    for url in missing:
+        if args.notify:
+            pushbullet_send(url)
+        else:
+            print(f"Would notify: {url}")
+
+
 
 
 if __name__ == "__main__":
