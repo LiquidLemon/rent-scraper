@@ -1,5 +1,6 @@
 import argparse
 import os
+from dataclasses import dataclass
 from datetime import datetime
 import sqlite3
 from typing import List
@@ -9,12 +10,18 @@ import requests
 from bs4 import BeautifulSoup
 
 
+@dataclass(frozen=True, eq=True)
+class Offer:
+    title: str
+    url: str
+
+
 def normalize_url(url: str) -> str:
     split = urlsplit(url)
     return urlunsplit((split.scheme, split.netloc, split.path, split.query, None))
 
 
-def get_olx_offers(url: str) -> List[str]:
+def get_olx_offers(url: str) -> List[Offer]:
     links = set()
 
     current_url = url
@@ -27,7 +34,8 @@ def get_olx_offers(url: str) -> List[str]:
 
         for offer in offers:
             link = offer.find("a", class_="link")["href"]
-            links.add(normalize_url(link))
+            title = offer.find("strong").get_text()
+            links.add(Offer(title=title, url=normalize_url(link)))
 
         # check next page
         next_button = page.find("span", class_="next")
@@ -45,43 +53,43 @@ def get_olx_offers(url: str) -> List[str]:
 
 def init_database(db: sqlite3.Connection):
     cur = db.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS offers (id INTEGER NOT NULL PRIMARY KEY, url TEXT, scraped_at TEXT)")
+    cur.execute("CREATE TABLE IF NOT EXISTS offers (id INTEGER NOT NULL PRIMARY KEY, title TEXT, url TEXT, scraped_at TEXT)")
     cur.close()
 
 
-def filter_missing_offers(db: sqlite3.Connection, urls: List[str]) -> List[str]:
+def filter_missing_offers(db: sqlite3.Connection, offers: List[Offer]) -> List[Offer]:
     missing_offers = []
 
     cur = db.cursor()
 
-    for url in urls:
-        cur.execute("SELECT * FROM offers WHERE url = ?", (url,))
+    for offer in offers:
+        cur.execute("SELECT * FROM offers WHERE url = ?", (offer.url,))
         result = cur.fetchall()
         if not result:
-            missing_offers.append(url)
+            missing_offers.append(offer)
 
     cur.close()
 
     return missing_offers
 
 
-def save_offers(db: sqlite3.Connection, urls: List[str]):
+def save_offers(db: sqlite3.Connection, offers: List[Offer]):
     cur = db.cursor()
 
     scraped_at = datetime.now().isoformat()
-    rows = [(url, scraped_at) for url in urls]
-    cur.executemany("INSERT INTO offers (url, scraped_at) VALUES (?, ?)", rows)
+    rows = [(offer.title, offer.url, scraped_at) for offer in offers]
+    cur.executemany("INSERT INTO offers (title, url, scraped_at) VALUES (?, ?, ?)", rows)
 
     cur.close()
     db.commit()
 
 
-def pushbullet_send(url: str):
+def pushbullet_send(offer: Offer):
     payload = {
         "type": "link",
-        "title": "Scraper",
-        "body": "Nowa oferta",
-        "url": url,
+        "title": "Nowa oferta",
+        "body": offer.title,
+        "url": offer.url,
     }
 
     headers = {"Access-Token": os.getenv("PUSHBULLET_TOKEN")}
@@ -105,15 +113,13 @@ def main():
     missing = filter_missing_offers(db, offers)
     save_offers(db, missing)
 
-    print(f"New offers: {len(missing)}.")
+    print(f"New offers: {len(missing)}")
 
-    for url in missing:
+    for offer in missing:
         if args.notify:
-            pushbullet_send(url)
+            pushbullet_send(offer)
         else:
-            print(f"Would notify: {url}")
-
-
+            print(f"Would notify: {offer.url}")
 
 
 if __name__ == "__main__":
