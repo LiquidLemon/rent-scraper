@@ -3,7 +3,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime
 import sqlite3
-from typing import List
+from typing import List, Dict, Callable
 from urllib.parse import urlsplit, urlunsplit
 
 import requests
@@ -98,19 +98,35 @@ def pushbullet_send(offer: Offer):
     assert response.ok
 
 
+HANDLERS: Dict[str, Callable[[str], List[Offer]]] = {
+    "www.olx.pl": get_olx_offers
+}
+
+
+def gather_offers(url: str) -> List[Offer]:
+    split = urlsplit(url)
+    handler = HANDLERS[split.netloc]
+    return handler(url)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--notify", action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
 
-    url = "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/?search%5Bdistrict_id%5D=99"
-    # url = "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/?search%5Bdist%5D=2&search%5Bdistrict_id%5D=99"
-    offers = get_olx_offers(url)
-
     db = sqlite3.connect("offers.sqlite")
     init_database(db)
 
-    missing = filter_missing_offers(db, offers)
+    queries = [
+        "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/?search%5Bdistrict_id%5D=99",
+        # url = "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/?search%5Bdist%5D=2&search%5Bdistrict_id%5D=99"
+    ]
+
+    offers = set()
+    for query in queries:
+        offers.update(gather_offers(query))
+
+    missing = filter_missing_offers(db, list(offers))
     save_offers(db, missing)
 
     print(f"New offers: {len(missing)}")
