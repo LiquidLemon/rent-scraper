@@ -134,6 +134,36 @@ def get_gratka_offers(url: str) -> List[Offer]:
     return list(offers)
 
 
+def get_morizon_offers(url: str) -> List[Offer]:
+    offers = set()
+    current_url = url
+
+    while True:
+        response = requests.get(current_url)
+        assert response.ok
+
+        page = BeautifulSoup(response.text, features="html.parser")
+        listings = page.find_all("div", class_="row-property")
+
+        for listing in listings:
+            if "finances" in listing["class"]:
+                # skip ad
+                continue
+
+            title = listing.find("h2").text.strip()
+            offer_url = listing.find("a", class_="property-url")["href"]
+            offer = Offer(title=title, url=offer_url)
+            offers.add(offer)
+
+        next_page_button = page.find("a", title="następna strona")
+        if not next_page_button or not next_page_button.has_attr("href"):
+            break
+
+        current_url = urljoin(url, next_page_button["href"])
+
+    return list(offers)
+
+
 def normalize_url(url: str) -> str:
     split = urlsplit(url)
     return urlunsplit((split.scheme, split.netloc, split.path, split.query, None))
@@ -144,4 +174,5 @@ HANDLERS: Dict[str, Callable[[str], List[Offer]]] = {
     "www.otodom.pl": get_otodom_offers,
     "ogloszenia.trojmiasto.pl": get_trojmiasto_offers,
     "gratka.pl": get_gratka_offers,
+    "www.morizon.pl": get_morizon_offers,
 }

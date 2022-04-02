@@ -76,6 +76,7 @@ def main():
         "https://www.otodom.pl/pl/oferty/wynajem/mieszkanie/gdansk/wrzeszcz?distanceRadius=0&page=1&limit=36&market=ALL&locations=%5Bdistricts_6-30%5D&roomsNumber=%5BONE%2CTWO%5D&viewType=listing&lang=pl&searchingCriteria=wynajem&searchingCriteria=mieszkanie&searchingCriteria=cala-polska",
         "https://ogloszenia.trojmiasto.pl/nieruchomosci-mam-do-wynajecia/mieszkanie/gdansk/wrzeszcz/ri,1_2.html",
         "https://gratka.pl/nieruchomosci/mieszkania/wynajem?liczba-pokoi:min=1&liczba-pokoi:max=2&lokalizacja[0]=117179&lokalizacja[1]=33771825&lokalizacja[2]=33771827",
+        "https://www.morizon.pl/do-wynajecia/mieszkania/gdansk/wrzeszcz/?ps%5Bnumber_of_rooms_from%5D=1&ps%5Bnumber_of_rooms_to%5D=3",
     ]
 
     offers = set()
