@@ -108,6 +108,32 @@ def get_trojmiasto_offers(url: str) -> List[Offer]:
     return list(offers)
 
 
+def get_gratka_offers(url: str) -> List[Offer]:
+    offers = set()
+    current_url = url
+
+    while True:
+        response = requests.get(current_url)
+        assert response.ok
+
+        page = BeautifulSoup(response.text, features="html.parser")
+        listings = page.find_all("a", class_="teaserUnified__anchor")
+
+        for listing in listings:
+            title = listing.text
+            offer_url = listing["href"]
+            offer = Offer(title=title, url=offer_url)
+            offers.add(offer)
+
+        next_page_button = page.find("a", class_="pagination__nextPage")
+        if not next_page_button:
+            break
+
+        current_url = next_page_button["href"]
+
+    return list(offers)
+
+
 def normalize_url(url: str) -> str:
     split = urlsplit(url)
     return urlunsplit((split.scheme, split.netloc, split.path, split.query, None))
@@ -117,4 +143,5 @@ HANDLERS: Dict[str, Callable[[str], List[Offer]]] = {
     "www.olx.pl": get_olx_offers,
     "www.otodom.pl": get_otodom_offers,
     "ogloszenia.trojmiasto.pl": get_trojmiasto_offers,
+    "gratka.pl": get_gratka_offers,
 }
