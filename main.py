@@ -65,7 +65,7 @@ def gather_offers(url: str) -> List[Offer]:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--notify", action=argparse.BooleanOptionalAction)
+    parser.add_argument("--notify", action="store_true")
     args = parser.parse_args()
 
     db = sqlite3.connect("offers.sqlite")
