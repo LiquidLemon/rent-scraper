@@ -143,23 +143,26 @@ def get_morizon_offers(url: str) -> List[Offer]:
         assert response.ok
 
         page = BeautifulSoup(response.text, features="html.parser")
-        listings = page.find_all("div", class_="row-property")
+        listings = page.find_all("a", class_="offer__outer")
 
         for listing in listings:
-            if "finances" in listing["class"]:
-                # skip ad
-                continue
+            general_location = listing.find("div", {"data-testid": "offer__location__tree"}).text.strip()
+            specific_location = listing.find("span", {"data-testid": "offer__location__highest-accuracy"})
 
-            title = listing.find("h2").text.strip()
-            offer_url = listing.find("a", class_="property-url")["href"]
+            if specific_location:
+                title = f"{general_location} - {specific_location.text.strip()}"
+            else:
+                title = general_location
+
+            offer_url = f"https://www.morizon.pl{listing['href']}"
             offer = Offer(title=title, url=offer_url)
             offers.add(offer)
 
-        next_page_button = page.find("a", title="następna strona")
-        if not next_page_button or not next_page_button.has_attr("href"):
+        next_page_link = page.find("link", {"data-hid": "next"})
+        if not next_page_link:
             break
 
-        current_url = urljoin(url, next_page_button["href"])
+        current_url = next_page_link["href"]
 
     return list(offers)
 
