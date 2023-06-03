@@ -117,10 +117,10 @@ def get_gratka_offers(url: str) -> List[Offer]:
         assert response.ok
 
         page = BeautifulSoup(response.text, features="html.parser")
-        listings = page.find_all("a", class_="teaserUnified__anchor")
+        listings = page.find_all("a", class_="teaserLink")
 
         for listing in listings:
-            title = listing.text
+            title = listing.title
             offer_url = listing["href"]
             offer = Offer(title=title, url=offer_url)
             offers.add(offer)
