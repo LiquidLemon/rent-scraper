@@ -176,3 +176,9 @@ HANDLERS: Dict[str, Callable[[str], List[Offer]]] = {
     "gratka.pl": get_gratka_offers,
     "www.morizon.pl": get_morizon_offers,
 }
+
+
+def gather_offers(url: str) -> List[Offer]:
+    split = urlsplit(url)
+    handler = HANDLERS[split.netloc]
+    return handler(url)

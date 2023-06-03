@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if message %}
+    <h2>{{ message }}</h2>
+{% endif %}
+<form action="/notifications/add" method="post">
+    <label>
+        Type
+        <select name="notification_type" required>
+            <option value="pushbullet" selected>Pushbullet</option>
+        </select>
+    </label>
+    <label>
+        Key
+        <input type="text" name="key" required>
+    </label>
+    <label>
+        Name
+        <input type="text" name="notification_name" required>
+    </label>
+    <input type="submit" value="Add">
+</form>
+{% endblock %}

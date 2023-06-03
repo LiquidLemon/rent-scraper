@@ -1,0 +1,18 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: rent-scraper
+    src: ./
+    engine: python3.9
+    primary: true
+    run: uvicorn listing_spy.web:app
+    dev: poetry run uvicorn listing_spy.web:app --reload
+    include:
+      - requirements.txt
+      - listing_spy
+      - templates
+    actions:
+      - id: "scrape"
+        name: "Scrape listing data"
+        trigger: schedule
+        default_interval: "0/3 * * * *"

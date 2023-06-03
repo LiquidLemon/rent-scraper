@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="/sources/add/">
+    <label>
+        Search address
+        <input type="text" name="url" placeholder="https://..." value="{{ source_url|default("") }}" required>
+    </label>
+    <input type="submit" value="Test">
+</form>
+{% if source_url %}
+    <form action="/sources/add" method="post">
+        <input type="hidden" value="{{ source_url }}" name="url">
+        <label>
+            Source name
+            <input type="text" name="source_name" value="{{ source_name }}" required>
+        </label>
+        <input type="submit" value="Save">
+    </form>
+{% endif %}
+
+{% if listings %}
+    <ul>
+    {% for listing in listings %}
+        <li>{{ listing.url }}</li>
+    {% endfor %}
+    </ul>
+{% elif source_url %}
+    Something went wrong, no listings found.
+{% endif %}
+{% endblock %}

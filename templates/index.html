@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Sources <a href="/sources/add">[add]</a></h2>
+<ul>
+    {% for source in sources %}
+    <li>
+        <span><a href="{{ source.url }}">{{source.name}}</a>{% if source.broken %} (error){% endif %}</span>
+        <form action="/sources/{{ source.key }}/delete" method="post">
+            <input type="submit" value="Delete">
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Notifications <a href="/notifications/add">[add]</a></h2>
+<ul>
+    {% for notification in notifications %}
+    <li>
+        {{ notification.name }}
+        <form action="/notifications/{{ notification.key }}/delete" method="post">
+            <input type="submit" value="Delete">
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
