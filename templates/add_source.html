@@ -20,6 +20,7 @@
 {% endif %}
 
 {% if listings %}
+    <p>Found listings: {{ listings|length }}</p>
     <ul>
     {% for listing in listings %}
         <li><a href="{{ listing.url }}">{{ listing.title }}</a></li>
