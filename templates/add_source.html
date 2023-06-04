@@ -22,7 +22,7 @@
 {% if listings %}
     <ul>
     {% for listing in listings %}
-        <li>{{ listing.url }}</li>
+        <li><a href="{{ listing.url }}">{{ listing.title }}</a></li>
     {% endfor %}
     </ul>
 {% elif source_url %}
