@@ -53,18 +53,18 @@ def get_otodom_offers(url: str) -> List[Offer]:
         assert response.ok
         page = BeautifulSoup(response.text, features="html.parser")
 
-        listings = page.find_all("a", {"data-cy": "listing-item-link"})
+        next_data = json.loads(page.find("script", id="__NEXT_DATA__").text)
+        search_ads = next_data["props"]["pageProps"]["data"]["searchAds"]
+        listings = search_ads["items"]
 
         for listing in listings:
-            title = listing.find("h3").get_text()
-            url = normalize_url(urljoin("https://www.otodom.pl", listing["href"]))
+            title = listing["title"]
+            url = normalize_url(urljoin("https://otodom.pl/pl/oferta/", listing["slug"]))
             offer = Offer(title=title, url=url)
             offers.add(offer)
 
-        data = json.loads(page.find("script", id="__NEXT_DATA__").text)
-
         try:
-            pagination = data["props"]["pageProps"]["data"]["searchAds"]["pagination"]
+            pagination = search_ads["pagination"]
             page = pagination["page"]
             total_pages = pagination["totalPages"]
 
