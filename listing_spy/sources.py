@@ -1,6 +1,6 @@
 import json
 from dataclasses import dataclass
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Optional
 from urllib.parse import urljoin, urlsplit, parse_qs, urlencode, urlunsplit
 
 import requests
@@ -17,17 +17,17 @@ def get_olx_offers(url: str) -> List[Offer]:
     links = set()
 
     current_url = url
-
     while True:
         response = requests.get(current_url)
         assert response.ok
+
         page = BeautifulSoup(response.text, features="html.parser")
-        offers = page.find_all("td", class_="offer")
+        offers = page.find_all("div", {"data-cy": "l-card"})
 
         for offer in offers:
-            link = offer.find("a", class_="link")["href"]
-            title = offer.find("strong").get_text()
-            links.add(Offer(title=title, url=normalize_url(link)))
+            link = offer.find("a")["href"]
+            title = offer.find("h6").get_text()
+            links.add(Offer(title=title, url=normalize_url(link, "www.olx.pl")))
 
         # check next page
         next_button = page.find("span", class_="next")
@@ -167,9 +167,18 @@ def get_morizon_offers(url: str) -> List[Offer]:
     return list(offers)
 
 
-def normalize_url(url: str) -> str:
+def normalize_url(url: str, domain: Optional[str] = None) -> str:
     split = urlsplit(url)
-    return urlunsplit((split.scheme, split.netloc, split.path, split.query, None))
+
+    if split.netloc:
+        domain = split.netloc
+
+    if split.scheme:
+        scheme = split.scheme
+    else:
+        scheme = "https"
+
+    return urlunsplit((scheme, domain, split.path, split.query, None))
 
 
 HANDLERS: Dict[str, Callable[[str], List[Offer]]] = {
