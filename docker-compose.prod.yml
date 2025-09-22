@@ -1,0 +1,22 @@
+services:
+  web:
+    image: ghcr.io/${GITHUB_REPOSITORY}:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=sqlite:////app/data/rent_scraper.db
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  scraper:
+    image: ghcr.io/${GITHUB_REPOSITORY}:latest
+    environment:
+      - DATABASE_URL=sqlite:////app/data/rent_scraper.db
+    volumes:
+      - ./data:/app/data
+    command: sh -c "while true; do cd /app && python run_scraper.py; sleep 300; done"
+    restart: unless-stopped
+    depends_on:
+      - web
