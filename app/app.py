@@ -18,6 +18,13 @@ app = FastAPI(title="Rent Scraper")
 # Add session middleware
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "your-secret-key-change-this"))
 
+# Initialize database on startup
+@app.on_event("startup")
+async def startup_event():
+    """Create database tables if they don't exist."""
+    from database import engine, Base
+    Base.metadata.create_all(bind=engine)
+
 # Static files and templates
 BASE_DIR = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")

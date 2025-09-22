@@ -1,0 +1,18 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-this-in-production}
+      - DATABASE_URL=sqlite:////app/rent_scraper.db
+    restart: unless-stopped
+
+  scraper:
+    build: .
+    environment:
+      - DATABASE_URL=sqlite:////app/rent_scraper.db
+    command: sh -c "while true; do cd /app && python run_scraper.py; sleep 300; done"
+    restart: unless-stopped
+    depends_on:
+      - web
