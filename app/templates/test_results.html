@@ -1,0 +1,50 @@
+<div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: white; margin-top: 20px;">
+    <h3>Test Results for "{{ query.name }}"</h3>
+    
+    {% if success %}
+        <div style="color: #28a745; margin-bottom: 15px;">
+            ✅ Query test successful! Found {{ offers|length }} offers (showing first 5):
+        </div>
+        
+        {% if offers %}
+        <div style="display: grid; gap: 10px;">
+            {% for offer in offers %}
+            <div style="border-left: 3px solid #28a745; padding: 10px; background: #f8f9fa;">
+                <h4 style="margin: 0 0 5px 0; font-size: 16px;">
+                    <a href="{{ offer.url }}" target="_blank" style="color: #007bff; text-decoration: none;">
+                        {{ offer.title }}
+                    </a>
+                </h4>
+                <p style="margin: 0; font-size: 12px; color: #666; word-break: break-all;">
+                    {{ offer.url }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="color: #ffc107;">No offers found for this query.</p>
+        {% endif %}
+        
+    {% else %}
+        <div style="color: #dc3545; margin-bottom: 15px;">
+            ❌ Query test failed:
+        </div>
+        <div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 4px; color: #721c24;">
+            {{ error }}
+        </div>
+        <div style="margin-top: 15px; font-size: 14px; color: #666;">
+            <strong>Troubleshooting tips:</strong>
+            <ul style="margin: 5px 0 0 20px;">
+                <li>Check if the URL is correct and accessible</li>
+                <li>Make sure the website is supported (currently only trojmiasto.pl works)</li>
+                <li>The website might have changed their structure</li>
+            </ul>
+        </div>
+    {% endif %}
+    
+    <div style="margin-top: 15px; text-align: right;">
+        <button onclick="this.parentElement.parentElement.remove()" style="background: #6c757d; font-size: 12px; padding: 5px 10px;">
+            Close
+        </button>
+    </div>
+</div>
