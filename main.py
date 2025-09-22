@@ -81,7 +81,15 @@ def main():
 
     offers = set()
     for query in queries:
-        offers.update(gather_offers(query))
+        try:
+            query_offers = gather_offers(query)
+        except Exception as e:
+            print(f"Error gathering offers for {query}: {e}")
+            continue
+
+        print(f"Found {len(query_offers)} offers for {query}")
+
+        offers.update(query_offers)
 
     missing = filter_missing_offers(db, list(offers))
     save_offers(db, missing)

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Rent Scraper{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+<p>Welcome, {{ user.username }}!</p>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+    <div>
+        <h3>Search Queries</h3>
+        <p>Manage your scraping queries and test them before saving.</p>
+        <a href="/queries"><button>Manage Queries</button></a>
+    </div>
+    
+    <div>
+        <h3>Notifications</h3>
+        <p>Configure Discord webhook notifications for new listings.</p>
+        <a href="/notifications"><button>Notification Settings</button></a>
+    </div>
+</div>
+{% endblock %}
