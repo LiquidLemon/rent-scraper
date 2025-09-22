@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == 'add' %}Add{% else %}Edit{% endif %} Discord Webhook - Rent Scraper{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px;">
+    <h2>{% if mode == 'add' %}Add New{% else %}Edit{% endif %} Discord Webhook</h2>
+    
+    <form method="post" action="{% if mode == 'add' %}/notifications/add{% else %}/notifications/{{ notification.id }}/edit{% endif %}" style="margin-bottom: 30px;">
+        <div class="form-group">
+            <label for="discord_webhook_url">Discord Webhook URL:</label>
+            <textarea id="discord_webhook_url" 
+                      name="discord_webhook_url" 
+                      required 
+                      placeholder="https://discord.com/api/webhooks/..."
+                      style="height: 80px; font-size: 14px; font-family: monospace; resize: vertical;">{% if notification %}{{ notification.discord_webhook_url }}{% endif %}</textarea>
+            <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+                🔗 Paste your Discord webhook URL here
+            </small>
+        </div>
+        
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button type="submit" style="background: #28a745;">
+                {% if mode == 'add' %}Add Webhook{% else %}Update Webhook{% endif %}
+            </button>
+            
+            <button type="button" 
+                    hx-post="/notifications/test" 
+                    hx-include="form"
+                    hx-target="#test-results" 
+                    hx-indicator="#loading"
+                    style="background: #7289da;">
+                Test Webhook
+            </button>
+            
+            <a href="/notifications">
+                <button type="button" style="background: #6c757d;">Cancel</button>
+            </a>
+        </div>
+    </form>
+    
+    <!-- Loading indicator -->
+    <div id="loading" class="htmx-indicator" style="text-align: center; color: #666; padding: 20px;">
+        🔄 Testing webhook, please wait...
+    </div>
+    
+    <!-- Test Results Section -->
+    <div id="test-results"></div>
+</div>
+
+<!-- Discord Webhook Setup Instructions -->
+<div style="background: #e9ecef; padding: 20px; border-radius: 8px; margin-top: 30px;">
+    <h3>How to create a Discord Webhook</h3>
+    <ol style="margin: 15px 0; padding-left: 20px; font-size: 14px; line-height: 1.6;">
+        <li><strong>Go to your Discord server</strong> where you want to receive notifications</li>
+        <li><strong>Right-click on the channel</strong> where notifications should appear</li>
+        <li>Select <strong>"Edit Channel"</strong></li>
+        <li>Go to the <strong>"Integrations"</strong> tab</li>
+        <li>Click <strong>"Create Webhook"</strong></li>
+        <li>Give your webhook a name (e.g., "Rent Scraper")</li>
+        <li>Click <strong>"Copy Webhook URL"</strong></li>
+        <li>Paste the URL in the field above</li>
+        <li>Use the <strong>"Test Webhook"</strong> button to verify it works</li>
+    </ol>
+    
+    <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 4px; margin-top: 15px;">
+        <strong>🔐 Security Note:</strong>
+        <p style="margin: 5px 0 0 0; font-size: 13px;">
+            Keep your webhook URLs private! Anyone with access to the URL can send messages to your Discord channel.
+        </p>
+    </div>
+</div>
+
+<style>
+.htmx-indicator {
+    display: none;
+}
+.htmx-request .htmx-indicator {
+    display: block;
+}
+</style>
+{% endblock %}

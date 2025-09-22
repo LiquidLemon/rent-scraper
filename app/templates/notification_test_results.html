@@ -1,0 +1,36 @@
+<div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: white; margin-top: 20px;">
+    <h3>Webhook Test Results</h3>
+    
+    {% if success %}
+        <div style="color: #28a745; margin-bottom: 15px;">
+            ✅ {{ message }}
+        </div>
+        
+        <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 4px; color: #155724;">
+            <strong>Success!</strong> Your Discord webhook is working correctly. You should see a test message in your Discord channel.
+        </div>
+        
+    {% else %}
+        <div style="color: #dc3545; margin-bottom: 15px;">
+            ❌ Webhook test failed:
+        </div>
+        <div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 4px; color: #721c24;">
+            {{ error }}
+        </div>
+        <div style="margin-top: 15px; font-size: 14px; color: #666;">
+            <strong>Troubleshooting tips:</strong>
+            <ul style="margin: 5px 0 0 20px;">
+                <li>Make sure the webhook URL is correct and complete</li>
+                <li>Verify the webhook hasn't been deleted in Discord</li>
+                <li>Check that the bot has permission to send messages to the channel</li>
+                <li>Discord webhook URLs should start with <code>https://discord.com/api/webhooks/</code></li>
+            </ul>
+        </div>
+    {% endif %}
+    
+    <div style="margin-top: 15px; text-align: right;">
+        <button onclick="this.parentElement.parentElement.remove()" style="background: #6c757d; font-size: 12px; padding: 5px 10px;">
+            Close
+        </button>
+    </div>
+</div>

@@ -8,7 +8,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import User, SearchQuery
+from models import User, SearchQuery, NotificationSetting
 from auth import authenticate_user, get_current_user, get_password_hash
 from scraper import test_query
 
@@ -130,6 +130,118 @@ async def test_query_endpoint(request: Request, name: str = Form(...), url: str 
             "query": test_query_obj, 
             "error": str(e),
             "success": False
+        })
+
+
+@app.get("/notifications", response_class=HTMLResponse)
+async def notifications_page(request: Request, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    notifications = db.query(NotificationSetting).filter(NotificationSetting.user_id == current_user.id).all()
+    return templates.TemplateResponse("notifications.html", {"request": request, "user": current_user, "notifications": notifications})
+
+
+@app.get("/notifications/add", response_class=HTMLResponse)
+async def add_notification_form(request: Request, current_user: User = Depends(get_current_user)):
+    return templates.TemplateResponse("notification_form.html", {"request": request, "user": current_user, "mode": "add"})
+
+
+@app.post("/notifications/add")
+async def add_notification(request: Request, discord_webhook_url: str = Form(...), current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    notification = NotificationSetting(discord_webhook_url=discord_webhook_url, user_id=current_user.id)
+    db.add(notification)
+    db.commit()
+    return RedirectResponse(url="/notifications", status_code=303)
+
+
+@app.get("/notifications/{notification_id}/edit", response_class=HTMLResponse)
+async def edit_notification_form(request: Request, notification_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    notification = db.query(NotificationSetting).filter(NotificationSetting.id == notification_id, NotificationSetting.user_id == current_user.id).first()
+    if not notification:
+        raise HTTPException(status_code=404, detail="Notification setting not found")
+    
+    return templates.TemplateResponse("notification_form.html", {"request": request, "user": current_user, "mode": "edit", "notification": notification})
+
+
+@app.post("/notifications/{notification_id}/edit")
+async def update_notification(request: Request, notification_id: int, discord_webhook_url: str = Form(...), current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    notification = db.query(NotificationSetting).filter(NotificationSetting.id == notification_id, NotificationSetting.user_id == current_user.id).first()
+    if not notification:
+        raise HTTPException(status_code=404, detail="Notification setting not found")
+    
+    notification.discord_webhook_url = discord_webhook_url
+    db.commit()
+    return RedirectResponse(url="/notifications", status_code=303)
+
+
+@app.post("/notifications/{notification_id}/delete")
+async def delete_notification(request: Request, notification_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    notification = db.query(NotificationSetting).filter(NotificationSetting.id == notification_id, NotificationSetting.user_id == current_user.id).first()
+    if not notification:
+        raise HTTPException(status_code=404, detail="Notification setting not found")
+    
+    db.delete(notification)
+    db.commit()
+    return RedirectResponse(url="/notifications", status_code=303)
+
+
+@app.post("/notifications/{notification_id}/toggle")
+async def toggle_notification(request: Request, notification_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    notification = db.query(NotificationSetting).filter(NotificationSetting.id == notification_id, NotificationSetting.user_id == current_user.id).first()
+    if not notification:
+        raise HTTPException(status_code=404, detail="Notification setting not found")
+    
+    notification.is_active = not notification.is_active
+    db.commit()
+    return RedirectResponse(url="/notifications", status_code=303)
+
+
+@app.post("/notifications/test", response_class=HTMLResponse)
+async def test_notification_endpoint(request: Request, discord_webhook_url: str = Form(...), current_user: User = Depends(get_current_user)):
+    import requests
+    import json
+    
+    try:
+        # Send a test message to Discord
+        payload = {
+            "content": f"🏠 Test notification from Rent Scraper for user: {current_user.username}",
+            "embeds": [{
+                "title": "Test Notification",
+                "description": "This is a test message to verify your Discord webhook is working correctly.",
+                "color": 0x00ff00,  # Green color
+                "footer": {"text": "Rent Scraper Test"}
+            }]
+        }
+        
+        response = requests.post(discord_webhook_url, 
+                               json=payload, 
+                               headers={'Content-Type': 'application/json'},
+                               timeout=10)
+        
+        if response.status_code == 204:
+            return templates.TemplateResponse("notification_test_results.html", {
+                "request": request,
+                "success": True,
+                "message": "Test notification sent successfully! Check your Discord channel."
+            })
+        else:
+            raise Exception(f"Discord returned status {response.status_code}: {response.text}")
+            
+    except requests.exceptions.Timeout:
+        return templates.TemplateResponse("notification_test_results.html", {
+            "request": request,
+            "success": False,
+            "error": "Request timed out. Please check your webhook URL."
+        })
+    except requests.exceptions.RequestException as e:
+        return templates.TemplateResponse("notification_test_results.html", {
+            "request": request,
+            "success": False,
+            "error": f"Network error: {str(e)}"
+        })
+    except Exception as e:
+        return templates.TemplateResponse("notification_test_results.html", {
+            "request": request,
+            "success": False,
+            "error": str(e)
         })
 
 

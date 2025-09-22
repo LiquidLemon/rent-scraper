@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications - Rent Scraper{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h2>Notification Settings</h2>
+    <a href="/notifications/add">
+        <button style="background: #28a745; padding: 10px 20px;">+ Add Discord Webhook</button>
+    </a>
+</div>
+
+<div>
+    {% if notifications %}
+    <div style="display: grid; gap: 20px;">
+        {% for notification in notifications %}
+        <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: white;">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <h3 style="margin: 0; color: {% if notification.is_active %}#28a745{% else %}#6c757d{% endif %};">
+                            Discord Webhook
+                        </h3>
+                        <span style="background: #7289da; color: white; font-size: 11px; padding: 2px 6px; border-radius: 3px; font-weight: bold;">
+                            DISCORD
+                        </span>
+                        {% if not notification.is_active %}
+                        <span style="font-size: 12px; color: #6c757d; background: #f8f9fa; padding: 2px 6px; border-radius: 3px;">
+                            Inactive
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                        <strong style="font-size: 12px; color: #666; text-transform: uppercase;">Webhook URL:</strong>
+                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #495057; word-break: break-all; font-family: monospace;">
+                            {{ notification.discord_webhook_url[:50] }}...
+                        </p>
+                    </div>
+                    
+                    <p style="margin: 10px 0 0 0; font-size: 12px; color: #999;">
+                        Created: {{ notification.created_at.strftime('%Y-%m-%d %H:%M') }}
+                    </p>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-left: 20px; min-width: 100px;">
+                    <a href="/notifications/{{ notification.id }}/edit">
+                        <button style="background: #ffc107; color: #212529; font-size: 13px; padding: 8px 15px; width: 100%;">Edit</button>
+                    </a>
+                    
+                    <form method="post" action="/notifications/{{ notification.id }}/toggle" style="width: 100%;">
+                        <button type="submit" style="background: {% if notification.is_active %}#6c757d{% else %}#28a745{% endif %}; font-size: 13px; padding: 8px 15px; width: 100%;">
+                            {% if notification.is_active %}Disable{% else %}Enable{% endif %}
+                        </button>
+                    </form>
+                    
+                    <form method="post" action="/notifications/{{ notification.id }}/delete" style="width: 100%;" onsubmit="return confirm('Are you sure you want to delete this notification setting?')">
+                        <button type="submit" style="background: #dc3545; font-size: 13px; padding: 8px 15px; width: 100%;">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 60px 20px; color: #6c757d; background: #f8f9fa; border-radius: 8px;">
+        <h3>No notification settings yet</h3>
+        <p>Set up Discord webhooks to get notified when new rental listings are found.</p>
+        <a href="/notifications/add">
+            <button style="background: #28a745; padding: 12px 24px; margin-top: 15px;">Add Discord Webhook</button>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% if notifications %}
+<div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #dee2e6;">
+    <p style="font-size: 14px; color: #6c757d; text-align: center;">
+        You have {{ notifications|length }} notification setting{{ 's' if notifications|length != 1 else '' }} 
+        ({{ notifications|selectattr('is_active')|list|length }} active)
+    </p>
+</div>
+{% endif %}
+
+<!-- Info box about Discord webhooks -->
+<div style="background: #e7f3ff; border: 1px solid #b3d9ff; padding: 20px; border-radius: 8px; margin-top: 30px;">
+    <h4 style="margin: 0 0 10px 0; color: #0066cc;">💡 About Discord Webhooks</h4>
+    <p style="margin: 0; font-size: 14px; color: #333;">
+        Discord webhooks allow you to receive notifications directly in your Discord channels when new rental listings are found. 
+        You can create a webhook URL in your Discord server settings under Integrations → Webhooks.
+    </p>
+</div>
+{% endblock %}
