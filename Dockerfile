@@ -18,15 +18,15 @@ RUN uv pip install --system .
 # Copy application code
 COPY . .
 
-# Create data directory for SQLite database
-RUN mkdir -p /app/data
+# Create shared directory for SQLite database
+RUN mkdir -p /app/shared
 
 # Set environment variables
 ENV PYTHONPATH=/app/app
-ENV DATABASE_URL=sqlite:////app/rent_scraper.db
+ENV DATABASE_URL=sqlite:////app/shared/rent_scraper.db
 
 # Expose port
 EXPOSE 8000
 
 # Start the application
-CMD ["sh", "-c", "cd /app && touch rent_scraper.db && cd app && uvicorn app:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "mkdir -p /app/shared && touch /app/shared/rent_scraper.db && cd app && uvicorn app:app --host 0.0.0.0 --port 8000"]

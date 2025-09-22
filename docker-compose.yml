@@ -3,16 +3,23 @@ services:
     build: .
     ports:
       - "8000:8000"
+    volumes:
+      - shared_data:/app/shared
     environment:
       - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-this-in-production}
-      - DATABASE_URL=sqlite:////app/rent_scraper.db
+      - DATABASE_URL=sqlite:////app/shared/rent_scraper.db
     restart: unless-stopped
 
   scraper:
     build: .
+    volumes:
+      - shared_data:/app/shared
     environment:
-      - DATABASE_URL=sqlite:////app/rent_scraper.db
+      - DATABASE_URL=sqlite:////app/shared/rent_scraper.db
     command: sh -c "while true; do cd /app && python run_scraper.py; sleep 300; done"
     restart: unless-stopped
     depends_on:
       - web
+
+volumes:
+  shared_data:
