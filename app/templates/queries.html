@@ -30,8 +30,38 @@
                         <a href="{{ query.url }}" target="_blank" style="color: #007bff; text-decoration: none;">View search</a>
                     </p>
                     
+                    {% if query.last_scraped_at %}
+                    <div style="margin: 8px 0; padding: 6px 10px; background: #f8f9fa; border-radius: 4px; font-size: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            {% if query.last_scrape_status == 'success' %}
+                                <span style="color: #28a745;">●</span>
+                                <span style="color: #28a745;">{{ query.last_scrape_count }} offers</span>
+                            {% elif query.last_scrape_status == 'no_results' %}
+                                <span style="color: #ffc107;">●</span>
+                                <span style="color: #f8a306;">0 offers</span>
+                            {% elif query.last_scrape_status == 'error' %}
+                                <span style="color: #dc3545;">●</span>
+                                <span style="color: #dc3545;">Error</span>
+                            {% endif %}
+                            
+                            <span style="color: #666;">•</span>
+                            
+                            <span style="color: #666;" title="{{ query.absolute_time }}">{{ query.formatted_time }}</span>
+                        </div>
+                        {% if query.last_scrape_status == 'error' and query.last_scrape_error %}
+                        <div style="margin-top: 4px; color: #dc3545; font-size: 11px;">
+                            {{ query.last_scrape_error[:100] }}{% if query.last_scrape_error|length > 100 %}...{% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div style="margin: 8px 0; padding: 6px 10px; background: #f8f9fa; border-radius: 4px; font-size: 12px; color: #999;">
+                        Never scraped
+                    </div>
+                    {% endif %}
+                    
                     <p style="margin: 10px 0 0 0; font-size: 12px; color: #999;">
-                        Created: {{ query.created_at.strftime('%Y-%m-%d %H:%M') }}
+                        Created: {{ query.created_at_local }}
                     </p>
                 </div>
                 

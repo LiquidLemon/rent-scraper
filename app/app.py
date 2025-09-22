@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from datetime import datetime, timezone
 from fastapi import FastAPI, Request, Depends, HTTPException, status, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -21,6 +22,35 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "your-s
 BASE_DIR = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+
+def format_relative_time(dt: datetime) -> str:
+    """Format datetime as relative time (e.g., '5m ago') with local timezone."""
+    if dt is None:
+        return "Never"
+    
+    # Convert to local timezone
+    if dt.tzinfo is None:
+        # Assume UTC if no timezone info
+        dt = dt.replace(tzinfo=timezone.utc)
+    
+    local_dt = dt.astimezone()
+    now = datetime.now(timezone.utc).astimezone()
+    
+    diff = now - local_dt
+    total_seconds = int(diff.total_seconds())
+    
+    if total_seconds < 60:
+        return f"{total_seconds}s ago"
+    elif total_seconds < 3600:
+        minutes = total_seconds // 60
+        return f"{minutes}m ago"
+    elif total_seconds < 86400:
+        hours = total_seconds // 3600
+        return f"{hours}h ago"
+    else:
+        days = total_seconds // 86400
+        return f"{days}d ago"
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -52,6 +82,25 @@ async def logout(request: Request):
 @app.get("/queries", response_class=HTMLResponse)
 async def queries_page(request: Request, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     queries = db.query(SearchQuery).filter(SearchQuery.user_id == current_user.id).all()
+    
+    # Add formatted time information to each query
+    for query in queries:
+        if query.last_scraped_at:
+            query.formatted_time = format_relative_time(query.last_scraped_at)
+            # Also keep the absolute time in local timezone for display
+            local_dt = query.last_scraped_at.replace(tzinfo=timezone.utc).astimezone()
+            query.absolute_time = local_dt.strftime('%m/%d %H:%M')
+        else:
+            query.formatted_time = "Never"
+            query.absolute_time = "Never"
+        
+        # Convert created_at to local timezone
+        if query.created_at:
+            created_local = query.created_at.replace(tzinfo=timezone.utc).astimezone()
+            query.created_at_local = created_local.strftime('%Y-%m-%d %H:%M')
+        else:
+            query.created_at_local = "Unknown"
+    
     return templates.TemplateResponse("queries.html", {"request": request, "user": current_user, "queries": queries})
 
 
@@ -62,7 +111,7 @@ async def add_query_form(request: Request, current_user: User = Depends(get_curr
 
 @app.post("/queries/add")
 async def add_query(request: Request, name: str = Form(...), url: str = Form(...), current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    query = SearchQuery(name=name, url=url, user_id=current_user.id)
+    query = SearchQuery(name=name.strip(), url=url.strip(), user_id=current_user.id)
     db.add(query)
     db.commit()
     return RedirectResponse(url="/queries", status_code=303)
@@ -83,8 +132,8 @@ async def update_query(request: Request, query_id: int, name: str = Form(...), u
     if not query:
         raise HTTPException(status_code=404, detail="Query not found")
     
-    query.name = name
-    query.url = url
+    query.name = name.strip()
+    query.url = url.strip()
     db.commit()
     return RedirectResponse(url="/queries", status_code=303)
 
@@ -95,6 +144,12 @@ async def delete_query(request: Request, query_id: int, current_user: User = Dep
     if not query:
         raise HTTPException(status_code=404, detail="Query not found")
     
+    # First delete all offers related to this query
+    from models import Offer
+    offers_deleted = db.query(Offer).filter(Offer.query_id == query_id).delete()
+    print(f"Deleted {offers_deleted} offers for query {query_id}")
+    
+    # Then delete the query itself
     db.delete(query)
     db.commit()
     return RedirectResponse(url="/queries", status_code=303)
@@ -113,11 +168,13 @@ async def toggle_query(request: Request, query_id: int, current_user: User = Dep
 
 @app.post("/queries/test", response_class=HTMLResponse)
 async def test_query_endpoint(request: Request, name: str = Form(...), url: str = Form(...), current_user: User = Depends(get_current_user)):
-    # Create a temporary query object for testing
-    test_query_obj = type('Query', (), {'name': name, 'url': url})()
+    # Create a temporary query object for testing (strip whitespace)
+    clean_name = name.strip()
+    clean_url = url.strip()
+    test_query_obj = type('Query', (), {'name': clean_name, 'url': clean_url})()
     
     try:
-        offers = test_query(url, limit=5)
+        offers = test_query(clean_url, limit=5)
         return templates.TemplateResponse("test_results.html", {
             "request": request, 
             "query": test_query_obj, 
@@ -146,7 +203,7 @@ async def add_notification_form(request: Request, current_user: User = Depends(g
 
 @app.post("/notifications/add")
 async def add_notification(request: Request, discord_webhook_url: str = Form(...), current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    notification = NotificationSetting(discord_webhook_url=discord_webhook_url, user_id=current_user.id)
+    notification = NotificationSetting(discord_webhook_url=discord_webhook_url.strip(), user_id=current_user.id)
     db.add(notification)
     db.commit()
     return RedirectResponse(url="/notifications", status_code=303)
@@ -167,7 +224,7 @@ async def update_notification(request: Request, notification_id: int, discord_we
     if not notification:
         raise HTTPException(status_code=404, detail="Notification setting not found")
     
-    notification.discord_webhook_url = discord_webhook_url
+    notification.discord_webhook_url = discord_webhook_url.strip()
     db.commit()
     return RedirectResponse(url="/notifications", status_code=303)
 
@@ -199,6 +256,9 @@ async def test_notification_endpoint(request: Request, discord_webhook_url: str 
     import requests
     import json
     
+    # Strip whitespace from webhook URL
+    clean_webhook_url = discord_webhook_url.strip()
+    
     try:
         # Send a test message to Discord
         payload = {
@@ -211,7 +271,7 @@ async def test_notification_endpoint(request: Request, discord_webhook_url: str 
             }]
         }
         
-        response = requests.post(discord_webhook_url, 
+        response = requests.post(clean_webhook_url, 
                                json=payload, 
                                headers={'Content-Type': 'application/json'},
                                timeout=10)

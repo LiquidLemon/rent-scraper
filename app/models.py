@@ -26,7 +26,14 @@ class SearchQuery(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     
+    # Scraping status fields
+    last_scraped_at = Column(DateTime, nullable=True)
+    last_scrape_count = Column(Integer, nullable=True)  # Number of offers found in last scrape
+    last_scrape_status = Column(String, nullable=True)  # 'success', 'error', 'no_results'
+    last_scrape_error = Column(Text, nullable=True)  # Error message if scrape failed
+    
     user = relationship("User", back_populates="search_queries")
+    offers = relationship("Offer", back_populates="query", cascade="all, delete-orphan")
 
 
 class NotificationSetting(Base):
@@ -49,3 +56,7 @@ class Offer(Base):
     url = Column(Text, nullable=False, unique=True)
     scraped_at = Column(DateTime, default=datetime.utcnow)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    query_id = Column(Integer, ForeignKey("search_queries.id", ondelete="CASCADE"), nullable=False)
+    
+    user = relationship("User")
+    query = relationship("SearchQuery", back_populates="offers")
