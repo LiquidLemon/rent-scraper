@@ -16,3 +16,12 @@ dependencies = [
     "passlib[bcrypt]",
     "itsdangerous",
 ]
+
+[dependency-groups]
+dev = [
+    "marimo>=0.16.0",
+    "types-requests>=2.32.4.20250913",
+]
+
+[tool.marimo.runtime]
+pythonpath = ["app"]

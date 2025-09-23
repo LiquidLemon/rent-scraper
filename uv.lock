@@ -175,6 +175,15 @@ wheels = [
 ]
 
 [[package]]
+name = "docutils"
+version = "0.22.2"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/9fd/b771707c8784c/docutils-0.22.2.tar.gz", hash = "sha256:9fdb771707c8784c8f2728b67cb2c691305933d68137ef95a75db5f4dfbc213d" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/b0e/98d679283fc3b/docutils-0.22.2-py3-none-any.whl", hash = "sha256:b0e98d679283fc3bb0ead8a5da7f501baa632654e7056e9c5846842213d674d8" },
+]
+
+[[package]]
 name = "fastapi"
 version = "0.117.1"
 source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
@@ -271,6 +280,18 @@ wheels = [
 ]
 
 [[package]]
+name = "jedi"
+version = "0.19.2"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+dependencies = [
+    { name = "parso" },
+]
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/477/0dc3de41bde39/jedi-0.19.2.tar.gz", hash = "sha256:4770dc3de41bde3966b02eb84fbcf557fb33cce26ad23da12c742fb50ecb11f0" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/a8e/f22bde8490f57/jedi-0.19.2-py2.py3-none-any.whl", hash = "sha256:a8ef22bde8490f57fe5c7681a3c83cb58874daf72b4784de3cce5b6ef6edb5b9" },
+]
+
+[[package]]
 name = "jinja2"
 version = "3.1.6"
 source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
@@ -283,6 +304,56 @@ wheels = [
 ]
 
 [[package]]
+name = "loro"
+version = "1.8.1"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/22c/fb19625bd7245/loro-1.8.1.tar.gz", hash = "sha256:22cfb19625bd7245e9747ee9d43b10511c16a35775a38cf914dc74863c4dbe88" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/9ee/ab61cac92d504/loro-1.8.1-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:9eeab61cac92d504eecd580c577becc12a0a3830141b17a49812ecaf5d3f3ebf" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/1f0/8fa1b4bdc7990/loro-1.8.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:1f08fa1b4bdc79901c763d81361537ca5c086560acb80291f5d6fe163613c603" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/420/fb0112115dc85/loro-1.8.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:420fb0112115dc85b8abd392e18aa163c7fda72b5329be46e7d0cb2261ef8adc" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/971/53d8929cda590/loro-1.8.1-cp312-cp312-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:97153d8929cda5903fdd5d681a5d0d4a28382e2707b292cfad6a387f4b73396c" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/934/362a533d0ebf7/loro-1.8.1-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:934362a533d0ebf75216799f1305252502a2e9733b3a7bb311012c4b8495f541" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/d7c/777cd9ddc13cd/loro-1.8.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:d7c777cd9ddc13cde9d0ec887ae3e02879d2f861d5862a0b6efd29fe4eff30dc" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/7ca/9d40e6e65d748/loro-1.8.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7ca9d40e6e65d748d36867fa623275d3b3bdb7c1da68f4005bc17f69a57034c0" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/ca5/bd845dc9b880a/loro-1.8.1-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:ca5bd845dc9b880a3fcbe1c977549157ed3e22566a38ee3d4bd94bfd76e12e50" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/488/84003f2268d83/loro-1.8.1-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:48884003f2268d83864205445ac8302894c0f51c63c7d8375c4ffd8e100e7ced" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/739/2c983eb8c6fa0/loro-1.8.1-cp312-cp312-musllinux_1_2_armv7l.whl", hash = "sha256:7392c983eb8c6fa062925dcca583dd2d635ea16105153b0cea3a0f40333bf60c" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/03f/9e0ea6c72929c/loro-1.8.1-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:03f9e0ea6c72929cacebef44e698db50e0e9caa77cc4d87d43a5b5836896a5a3" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/3e0/a0188d120bce7/loro-1.8.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:3e0a0188d120bce70a64c58731330ed9b495ae2034061b5a3616b2b7940ead89" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/90a/02ac5c85629d9/loro-1.8.1-cp312-cp312-win32.whl", hash = "sha256:90a02ac5c85629d920c4767dc4b31382d21bde7af93d5dc4d3a4fcde4b4fece0" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/92a/31a8613fc6d9b/loro-1.8.1-cp312-cp312-win_amd64.whl", hash = "sha256:92a31a8613fc6d9bb33a64767202e19592ac670618a174c0fbc940e31dba9d87" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/55e/e9ded98d6e328/loro-1.8.1-cp313-cp313-macosx_10_12_x86_64.whl", hash = "sha256:55ee9ded98d6e328f210a1b9e2f01e8befb6994da82dd03756c56d8aa047a2ce" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/4dc/c9a3f558912d0/loro-1.8.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:4dcc9a3f558912d0ba2d39954f8391084e987e7970b375bfd96f67d9499ad4a0" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/2a2/b318bb08d1bdc/loro-1.8.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2a2b318bb08d1bdc7a0b8467a7ec6d90c7c46b0c58e7aafc9fc307825fa868f7" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/42a/7e09cb68da975/loro-1.8.1-cp313-cp313-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:42a7e09cb68da97559cd103a93ae69004bb929fba3db6a13846c83ac979698ce" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/cc5/acb22ca0ae3e6/loro-1.8.1-cp313-cp313-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:cc5acb22ca0ae3e6793024cfc3ea99f200b57c549fa71e48cdaedf22cde6fe19" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/dc9/2b19a44b16e86/loro-1.8.1-cp313-cp313-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:dc92b19a44b16e86dced2b76d760715f1099aa99433c908e0fe5627d7897b98d" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/1ee/d7933a3e1500c/loro-1.8.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1eed7933a3e1500c5a8e826c5faf7904ce253725512234eb2b2bfb01ca085217" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/e62/783de33f8bf0c/loro-1.8.1-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:e62783de33f8bf0cf8b834defacd4dd62d1adb227d93d9d24cc28febf9f53eec" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/d8f/394e65acd54af/loro-1.8.1-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:d8f394e65acd54af19b5cea796d9d9aa4e512f7979f8514f6938fd9813a753f5" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/620/5cc3fcb75b491/loro-1.8.1-cp313-cp313-musllinux_1_2_armv7l.whl", hash = "sha256:6205cc3fcb75b4913678ca399ab97abab0f253c8f72ece637d183979c06d19a1" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/b1c/d5d028309f8ae/loro-1.8.1-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:b1cd5d028309f8ae94b14b7b1fb3a6e488b8a09d205a37d44eb3af04061be742" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/3da/7bc3cc0e8b04f/loro-1.8.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:3da7bc3cc0e8b04f094bc52c3f416f86be4c3a332dcbd9428b466d98329f26f5" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/a90/e5d56a030e284/loro-1.8.1-cp313-cp313-win32.whl", hash = "sha256:a90e5d56a030e284a998b73a1c55c5b8c5f62f96bee4cc017b88ff815f9fb743" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/fbe/e625170327de6/loro-1.8.1-cp313-cp313-win_amd64.whl", hash = "sha256:fbee625170327de616709af943410b72c5a4c12ebd8f7dff6324d59aa51da5b2" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/df6/f3dfa58cebfe1/loro-1.8.1-cp313-cp313t-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:df6f3dfa58cebfe1f0e08a8a929303338c506733dd8650afd3d1f3ac70546ece" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/c63/2a0a4a00f4a73/loro-1.8.1-cp313-cp313t-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:c632a0a4a00f4a73df32fcaf266320995f89b68fc5f1d875efc979cda810babd" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/888/de919b082ace4/loro-1.8.1-cp313-cp313t-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:888de919b082ace4cb88f7244aa7a5263233604fc0fb9e7571703940a6897be2" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/168/9f8fd79dc76f7/loro-1.8.1-cp313-cp313t-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:1689f8fd79dc76f75e4bd027e9685bb73b44e0b60cfc0412d78369da300e6f68" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/028/194142bc4b628/loro-1.8.1-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:028194142bc4b628ec0f926018fbfd18d92912d69eb2f57a14adf4a3ef1fc7e7" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/9e6/dde01971d72ba/loro-1.8.1-cp313-cp313t-musllinux_1_2_armv7l.whl", hash = "sha256:9e6dde01971d72ba678161aaa24bc5261929def86a6feb8149d3e2dab0964aea" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/8d3/789752b26b40f/loro-1.8.1-cp313-cp313t-musllinux_1_2_i686.whl", hash = "sha256:8d3789752b26b40f26a44a80d784a4f9e40f2bd0e40a4eeb01e1e386920feaaa" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/ab0/4743218b6cbbf/loro-1.8.1-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:ab04743218b6cbbfdf4ca74d158aed20ed0c9d7019620d35548e89f1d519923b" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/29c/25f33c659a802/loro-1.8.1-cp314-cp314-macosx_10_12_x86_64.whl", hash = "sha256:29c25f33c659a8027974cd88c94f08b4708376b200290a858c8abd891d64ba15" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/4a9/643d19eee7379/loro-1.8.1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:4a9643d19eee7379b6980fc3b31a492bd22aa1e9aaa6fd67c8b5b4b57a0c7a1c" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/323/370115c37a793/loro-1.8.1-cp314-cp314-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:323370115c37a793e805952e21703d8e8c91cc7ef16dd3a378043fe40174599f" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/692/65d6751e536fd/loro-1.8.1-cp314-cp314-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:69265d6751e536fd7ba1f04c6be200239b4d8090bcd1325a95ded08621c4c910" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/00c/3662f50b81276/loro-1.8.1-cp314-cp314-win32.whl", hash = "sha256:00c3662f50b81276a0f45d90504402e36512fda9f98e3e9353cc2b2394aa56a5" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/c6e/bacceed553dad/loro-1.8.1-cp314-cp314-win_amd64.whl", hash = "sha256:c6ebacceed553dad118dd61f946f5f8fb23ace5ca93e8ee8ebd4f6ca4cffa854" },
+]
+
+[[package]]
 name = "mako"
 version = "1.3.10"
 source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
@@ -292,6 +363,43 @@ dependencies = [
 sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/995/79a6f39583fa7/mako-1.3.10.tar.gz", hash = "sha256:99579a6f39583fa7e5630a28c3c1f440e4e97a414b80372649c0ce338da2ea28" }
 wheels = [
     { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/bae/f24a52fc4fc51/mako-1.3.10-py3-none-any.whl", hash = "sha256:baef24a52fc4fc514a0887ac600f9f1cff3d82c61d4d700a1fa84d597b88db59" },
+]
+
+[[package]]
+name = "marimo"
+version = "0.16.0"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+dependencies = [
+    { name = "click" },
+    { name = "docutils" },
+    { name = "itsdangerous" },
+    { name = "jedi" },
+    { name = "loro" },
+    { name = "markdown" },
+    { name = "msgspec" },
+    { name = "narwhals" },
+    { name = "packaging" },
+    { name = "psutil" },
+    { name = "pygments" },
+    { name = "pymdown-extensions" },
+    { name = "pyyaml" },
+    { name = "starlette" },
+    { name = "tomlkit" },
+    { name = "uvicorn" },
+    { name = "websockets" },
+]
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/813/77a0cfe4e95f9/marimo-0.16.0.tar.gz", hash = "sha256:81377a0cfe4e95f9d7341a860a0a2772caccc1e8a7bbc8d3ad20c7945d77b07c" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/8b7/d092894a23461/marimo-0.16.0-py3-none-any.whl", hash = "sha256:8b7d092894a23461e087b0fdf86942876602a779b6403c01f324b35be4c99495" },
+]
+
+[[package]]
+name = "markdown"
+version = "3.9"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/d29/00fe1782bd33b/markdown-3.9.tar.gz", hash = "sha256:d2900fe1782bd33bdbbd56859defef70c2e78fc46668f8eb9df3128138f2cb6a" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/9f4/d91ed810864ea/markdown-3.9-py3-none-any.whl", hash = "sha256:9f4d91ed810864ea88a6f32c07ba8bee1346c0cc1f6b1f9f6c822f2a9667d280" },
 ]
 
 [[package]]
@@ -333,6 +441,55 @@ wheels = [
 ]
 
 [[package]]
+name = "msgspec"
+version = "0.19.0"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/604/037e7cd475345/msgspec-0.19.0.tar.gz", hash = "sha256:604037e7cd475345848116e89c553aa9a233259733ab51986ac924ab1b976f8e" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/f98/bd8962ad549c2/msgspec-0.19.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:f98bd8962ad549c27d63845b50af3f53ec468b6318400c9f1adfe8b092d7b62f" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/43b/bb237feab761b/msgspec-0.19.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:43bbb237feab761b815ed9df43b266114203f53596f9b6e6f00ebd79d178cdf2" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/4cf/c033c02c3e0ae/msgspec-0.19.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4cfc033c02c3e0aec52b71710d7f84cb3ca5eb407ab2ad23d75631153fdb1f12" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/d91/1c442571605e1/msgspec-0.19.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d911c442571605e17658ca2b416fd8579c5050ac9adc5e00c2cb3126c97f73bc" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/757/b501fa57e2489/msgspec-0.19.0-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:757b501fa57e24896cf40a831442b19a864f56d253679f34f260dcb002524a6c" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/5f0/f65f29b45e281/msgspec-0.19.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:5f0f65f29b45e2816d8bded36e6b837a4bf5fb60ec4bc3c625fa2c6da4124537" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/067/f0de1c33cfa0b/msgspec-0.19.0-cp312-cp312-win_amd64.whl", hash = "sha256:067f0de1c33cfa0b6a8206562efdf6be5985b988b53dd244a8e06f993f27c8c0" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/f12/d30dd6266557a/msgspec-0.19.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:f12d30dd6266557aaaf0aa0f9580a9a8fbeadfa83699c487713e355ec5f0bd86" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/82b/2c42c1b9ebc89/msgspec-0.19.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:82b2c42c1b9ebc89e822e7e13bbe9d17ede0c23c187469fdd9505afd5a481314" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/197/46b50be214a54/msgspec-0.19.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:19746b50be214a54239aab822964f2ac81e38b0055cca94808359d779338c10e" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/60e/f4bdb0ec8e4ad/msgspec-0.19.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:60ef4bdb0ec8e4ad62e5a1f95230c08efb1f64f32e6e8dd2ced685bcc73858b5" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/ac7/f7c377c122b64/msgspec-0.19.0-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:ac7f7c377c122b649f7545810c6cd1b47586e3aa3059126ce3516ac7ccc6a6a9" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/a5b/c1472223a643f/msgspec-0.19.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:a5bc1472223a643f5ffb5bf46ccdede7f9795078194f14edd69e3aab7020d327" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/317/050bc0f7739cb/msgspec-0.19.0-cp313-cp313-win_amd64.whl", hash = "sha256:317050bc0f7739cb30d257ff09152ca309bf5a369854bbf1e57dffc310c1f20f" },
+]
+
+[[package]]
+name = "narwhals"
+version = "2.5.0"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/8ae/0b6f39597f14c/narwhals-2.5.0.tar.gz", hash = "sha256:8ae0b6f39597f14c0dc52afc98949d6f8be89b5af402d2d98101d2f7d3561418" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/7e2/13f9ca7db3f8b/narwhals-2.5.0-py3-none-any.whl", hash = "sha256:7e213f9ca7db3f8bf6f7eff35eaee6a1cf80902997e1b78d49b7755775d8f423" },
+]
+
+[[package]]
+name = "packaging"
+version = "25.0"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/d44/3872c98d677bf/packaging-25.0.tar.gz", hash = "sha256:d443872c98d677bf60f6a1f2f8c1cb748e8fe762d2bf9d3148b5599295b0fc4f" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/295/72ef2b1f17581/packaging-25.0-py3-none-any.whl", hash = "sha256:29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484" },
+]
+
+[[package]]
+name = "parso"
+version = "0.8.5"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/034/d7354a9a018bd/parso-0.8.5.tar.gz", hash = "sha256:034d7354a9a018bdce352f48b2a8a450f05e9d6ee85db84764e9b6bd96dafe5a" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/646/204b5ee239c39/parso-0.8.5-py2.py3-none-any.whl", hash = "sha256:646204b5ee239c396d040b90f9e272e9a8017c630092bf59980beb62fd033887" },
+]
+
+[[package]]
 name = "passlib"
 version = "1.7.4"
 source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
@@ -344,6 +501,22 @@ wheels = [
 [package.optional-dependencies]
 bcrypt = [
     { name = "bcrypt" },
+]
+
+[[package]]
+name = "psutil"
+version = "7.1.0"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/655/708b3c069387c/psutil-7.1.0.tar.gz", hash = "sha256:655708b3c069387c8b77b072fc429a57d0e214221d01c0a772df7dfedcb3bcd2" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/761/68cef43974942/psutil-7.1.0-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:76168cef4397494250e9f4e73eb3752b146de1dd950040b29186d0cce1d5ca13" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/5d0/07560c8c372ef/psutil-7.1.0-cp36-abi3-macosx_11_0_arm64.whl", hash = "sha256:5d007560c8c372efdff9e4579c2846d71de737e4605f611437255e81efcca2c5" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/22e/4454970b32472/psutil-7.1.0-cp36-abi3-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:22e4454970b32472ce7deaa45d045b34d3648ce478e26a04c7e858a0a6e75ff3" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/8c7/0e113920d51e8/psutil-7.1.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8c70e113920d51e89f212dd7be06219a9b88014e63a4cec69b684c327bc474e3" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/7d4/a113425c03730/psutil-7.1.0-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7d4a113425c037300de3ac8b331637293da9be9713855c4fc9d2d97436d7259d" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/09a/d740870c8d219/psutil-7.1.0-cp37-abi3-win32.whl", hash = "sha256:09ad740870c8d219ed8daae0ad3b726d3bf9a028a198e7f3080f6a1888b99bca" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/57f/5e987c36d3146/psutil-7.1.0-cp37-abi3-win_amd64.whl", hash = "sha256:57f5e987c36d3146c0dd2528cd42151cf96cd359b9d67cfff836995cc5df9a3d" },
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/693/7cb68133e7c97/psutil-7.1.0-cp37-abi3-win_arm64.whl", hash = "sha256:6937cb68133e7c97b6cc9649a570c9a18ba0efebed46d8c5dae4c07fa1b67a07" },
 ]
 
 [[package]]
@@ -401,6 +574,28 @@ wheels = [
     { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/61c/18fba8e5e9db3/pydantic_core-2.33.2-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:61c18fba8e5e9db3ab908620af374db0ac1baa69f0f32df4f61ae23f15e586ac" },
     { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/952/37e53bb015f67/pydantic_core-2.33.2-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:95237e53bb015f67b63c91af7518a62a8660376a6a0db19b89acc77a4d6199f5" },
     { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/c2f/c0a768ef76c15/pydantic_core-2.33.2-cp313-cp313t-win_amd64.whl", hash = "sha256:c2fc0a768ef76c15ab9238afa6da7f69895bb5d1ee83aeea2e3509af4472d0b9" },
+]
+
+[[package]]
+name = "pygments"
+version = "2.19.2"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/636/cb2477cec7f89/pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/865/40386c03d588b/pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b" },
+]
+
+[[package]]
+name = "pymdown-extensions"
+version = "10.16.1"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+dependencies = [
+    { name = "markdown" },
+    { name = "pyyaml" },
+]
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/aac/e82bcccba3efc/pymdown_extensions-10.16.1.tar.gz", hash = "sha256:aace82bcccba3efc03e25d584e6a22d27a8e17caa3f4dd9f207e49b787aa9a91" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/d6b/a157a6c03146a/pymdown_extensions-10.16.1-py3-none-any.whl", hash = "sha256:d6ba157a6c03146a7fb122b2b9a121300056384eafeec9c9f9e584adfdb2a32d" },
 ]
 
 [[package]]
@@ -464,6 +659,12 @@ dependencies = [
     { name = "uvicorn", extra = ["standard"] },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "marimo" },
+    { name = "types-requests" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "alembic" },
@@ -476,6 +677,12 @@ requires-dist = [
     { name = "requests", specifier = ">=2.32.5" },
     { name = "sqlalchemy" },
     { name = "uvicorn", extras = ["standard"] },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "marimo", specifier = ">=0.16.0" },
+    { name = "types-requests", specifier = ">=2.32.4.20250913" },
 ]
 
 [[package]]
@@ -551,6 +758,27 @@ dependencies = [
 sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/7e8/cee469a8ab235/starlette-0.48.0.tar.gz", hash = "sha256:7e8cee469a8ab2352911528110ce9088fdc6a37d9876926e73da7ce4aa4c7a46" }
 wheels = [
     { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/076/4ca97b0975825/starlette-0.48.0-py3-none-any.whl", hash = "sha256:0764ca97b097582558ecb498132ed0c7d942f233f365b86ba37770e026510659" },
+]
+
+[[package]]
+name = "tomlkit"
+version = "0.13.3"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/430/cf247ee57df2b/tomlkit-0.13.3.tar.gz", hash = "sha256:430cf247ee57df2b94ee3fbe588e71d362a941ebb545dec29b53961d61add2a1" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/c89/c649d79ee4062/tomlkit-0.13.3-py3-none-any.whl", hash = "sha256:c89c649d79ee40629a9fda55f8ace8c6a1b42deb912b2a8fd8d942ddadb606b0" },
+]
+
+[[package]]
+name = "types-requests"
+version = "2.32.4.20250913"
+source = { registry = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/uni/uni/+simple" }
+dependencies = [
+    { name = "urllib3" },
+]
+sdist = { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/abd/6d4f9ce3a9383/types_requests-2.32.4.20250913.tar.gz", hash = "sha256:abd6d4f9ce3a9383f269775a9835a4c24e5cd6b9f647d64f88aa4613c33def5d" }
+wheels = [
+    { url = "https://uni-pypi-server-cdn.sre.airspace-intelligence.com/root/pypi/+f/78c/9c1fffebbe0fa/types_requests-2.32.4.20250913-py3-none-any.whl", hash = "sha256:78c9c1fffebbe0fa487a418e0fa5252017e9c60d1a2da394077f1780f655d7e1" },
 ]
 
 [[package]]
