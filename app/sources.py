@@ -1,6 +1,6 @@
 import json
 from dataclasses import dataclass
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Optional
 from urllib.parse import urljoin, urlsplit, parse_qs, urlencode, urlunsplit
 
 import requests
@@ -15,10 +15,11 @@ class Offer:
     url: str
 
 
-def get_olx_offers(url: str) -> List[Offer]:
+def get_olx_offers(url: str, max_pages: Optional[int] = None) -> List[Offer]:
     links = set()
 
     current_url = url
+    pages_fetched = 0
 
     while True:
         response = requests.get(current_url, headers={'User-Agent': USER_AGENT})
@@ -31,6 +32,10 @@ def get_olx_offers(url: str) -> List[Offer]:
             title = offer.text.strip()
             links.add(Offer(title=title, url=normalize_url(link, default_host="www.olx.pl")))
 
+        pages_fetched += 1
+        if max_pages and pages_fetched >= max_pages:
+            break
+
         # check next page
         next_link = page.find("a", {"data-cy": "pagination-forward"})
         if not next_link:
@@ -40,10 +45,11 @@ def get_olx_offers(url: str) -> List[Offer]:
 
     return list(links)
 
-def get_nieruchomosci_online_offers(url: str) -> List[Offer]:
+def get_nieruchomosci_online_offers(url: str, max_pages: Optional[int] = None) -> List[Offer]:
     links = set()
 
     current_url = url
+    pages_fetched = 0
     
     reached_end = False
     while True:
@@ -67,6 +73,10 @@ def get_nieruchomosci_online_offers(url: str) -> List[Offer]:
             link = link_element["href"]
             title = card.find("h2").text.strip()
             links.add(Offer(title=title, url=normalize_url(link)))
+
+        pages_fetched += 1
+        if max_pages and pages_fetched >= max_pages:
+            break
 
         if reached_end:
             break
@@ -118,9 +128,10 @@ def get_otodom_offers(url: str) -> List[Offer]:
     return list(offers)
 
 
-def get_trojmiasto_offers(url: str) -> List[Offer]:
+def get_trojmiasto_offers(url: str, max_pages: Optional[int] = None) -> List[Offer]:
     offers = set()
     current_url = url
+    pages_fetched = 0
 
     while True:
         response = requests.get(current_url, headers={'User-Agent': USER_AGENT})
@@ -135,6 +146,10 @@ def get_trojmiasto_offers(url: str) -> List[Offer]:
             offer = Offer(title=title, url=offer_url)
             offers.add(offer)
 
+        pages_fetched += 1
+        if max_pages and pages_fetched >= max_pages:
+            break
+
         next_page_button = page.find("a", title="następna")
         if not next_page_button:
             break
@@ -144,9 +159,10 @@ def get_trojmiasto_offers(url: str) -> List[Offer]:
     return list(offers)
 
 
-def get_gratka_offers(url: str) -> List[Offer]:
+def get_gratka_offers(url: str, max_pages: Optional[int] = None) -> List[Offer]:
     offers = set()
     current_url = url
+    pages_fetched = 0
 
     while True:
         response = requests.get(current_url, headers={'User-Agent': USER_AGENT})
@@ -160,6 +176,10 @@ def get_gratka_offers(url: str) -> List[Offer]:
             offer_url = normalize_url(listing.find("a")["href"], default_host="gratka.pl")
             offer = Offer(title=title, url=offer_url)
             offers.add(offer)
+
+        pages_fetched += 1
+        if max_pages and pages_fetched >= max_pages:
+            break
 
         candidate_links = page.find_all("a", {"aria-current": "page"})
         for link in candidate_links:
@@ -203,9 +223,10 @@ def get_morizon_offers(url: str) -> List[Offer]:
 
     return list(offers)
 
-def get_rentola_offers(url: str) -> List[Offer]:
+def get_rentola_offers(url: str, max_pages: Optional[int] = None) -> List[Offer]:
     offers = set()
     current_url = url
+    pages_fetched = 0
 
     while True:
         response = requests.get(current_url, headers={'User-Agent': USER_AGENT})
@@ -219,6 +240,10 @@ def get_rentola_offers(url: str) -> List[Offer]:
             offer_url = listing.find("a")["href"]
             offer = Offer(title=title, url=normalize_url(offer_url, default_host="rentola.pl"))
             offers.add(offer)
+
+        pages_fetched += 1
+        if max_pages and pages_fetched >= max_pages:
+            break
 
         pagination = page.find("div", {"role": "navigation"})
         if not pagination:
@@ -240,7 +265,7 @@ def normalize_url(url: str, default_host: str | None = None) -> str:
     return urlunsplit((split.scheme, split.netloc, split.path, split.query, None))
 
 
-HANDLERS: Dict[str, Callable[[str], List[Offer]]] = {
+HANDLERS: Dict[str, Callable[[str, Optional[int]], List[Offer]]] = {
     "www.olx.pl": get_olx_offers,
     "m.olx.pl": get_olx_offers,
     "gdansk.nieruchomosci-online.pl": get_nieruchomosci_online_offers,

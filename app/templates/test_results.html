@@ -3,7 +3,11 @@
     
     {% if success %}
         <div style="color: #28a745; margin-bottom: 15px;">
-            ✅ Query test successful! Found {{ offers|length }} offers (showing first 5):
+            {% if has_more_results %}
+                ✅ Query test successful! Showing first {{ offers|length }} found listings (more results available):
+            {% else %}
+                ✅ Query test successful! Found {{ offers|length }} offers:
+            {% endif %}
         </div>
         
         {% if offers %}
@@ -36,7 +40,7 @@
             <strong>Troubleshooting tips:</strong>
             <ul style="margin: 5px 0 0 20px;">
                 <li>Check if the URL is correct and accessible</li>
-                <li>Make sure the website is supported (currently only trojmiasto.pl works)</li>
+                <li>Make sure the website is supported (currently: olx.pl, trojmiasto.pl, gratka.pl, rentola.pl, nieruchomosci-online.pl)</li>
                 <li>The website might have changed their structure</li>
             </ul>
         </div>

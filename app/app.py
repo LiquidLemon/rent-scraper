@@ -181,11 +181,12 @@ async def test_query_endpoint(request: Request, name: str = Form(...), url: str 
     test_query_obj = type('Query', (), {'name': clean_name, 'url': clean_url})()
     
     try:
-        offers = test_query(clean_url, limit=5)
+        offers, has_more_results = test_query(clean_url, limit=5)
         return templates.TemplateResponse("test_results.html", {
             "request": request, 
             "query": test_query_obj, 
             "offers": offers,
+            "has_more_results": has_more_results,
             "success": True
         })
     except Exception as e:
