@@ -89,10 +89,11 @@ def get_nieruchomosci_online_offers(url: str, max_pages: Optional[int] = None) -
 
     return list(links)
 
-def get_otodom_offers(url: str) -> List[Offer]:
+def get_otodom_offers(url: str, max_pages: Optional[int] = None) -> List[Offer]:
     offers = set()
 
     current_url = url
+    pages_fetched = 0
 
     while True:
         response = requests.get(current_url, headers={'User-Agent': USER_AGENT})
@@ -106,6 +107,10 @@ def get_otodom_offers(url: str) -> List[Offer]:
             url = normalize_url(urljoin("https://www.otodom.pl", listing["href"]))
             offer = Offer(title=title, url=url)
             offers.add(offer)
+
+        pages_fetched += 1
+        if max_pages and pages_fetched >= max_pages:
+            break
 
         data = json.loads(page.find("script", id="__NEXT_DATA__").text)
 
@@ -194,9 +199,10 @@ def get_gratka_offers(url: str, max_pages: Optional[int] = None) -> List[Offer]:
     return list(offers)
 
 
-def get_morizon_offers(url: str) -> List[Offer]:
+def get_morizon_offers(url: str, max_pages: Optional[int] = None) -> List[Offer]:
     offers = set()
     current_url = url
+    pages_fetched = 0
 
     while True:
         response = requests.get(current_url, headers={'User-Agent': USER_AGENT})
@@ -214,6 +220,10 @@ def get_morizon_offers(url: str) -> List[Offer]:
             offer_url = listing.find("a", class_="property-url")["href"]
             offer = Offer(title=title, url=offer_url)
             offers.add(offer)
+
+        pages_fetched += 1
+        if max_pages and pages_fetched >= max_pages:
+            break
 
         next_page_button = page.find("a", title="następna strona")
         if not next_page_button or not next_page_button.has_attr("href"):
