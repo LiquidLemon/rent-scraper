@@ -62,19 +62,19 @@ def format_relative_time(dt: datetime) -> str:
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request, current_user: User = Depends(get_current_user)):
-    return templates.TemplateResponse("dashboard.html", {"request": request, "user": current_user})
+    return templates.TemplateResponse(request, "dashboard.html", context={"user": current_user})
 
 
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(request, "login.html")
 
 
 @app.post("/login")
 async def login(request: Request, username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
     user = authenticate_user(db, username, password)
     if not user:
-        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid username or password"})
+        return templates.TemplateResponse(request, "login.html", context={"error": "Invalid username or password"})
     
     request.session["user_id"] = user.id
     return RedirectResponse(url="/", status_code=303)
@@ -108,12 +108,12 @@ async def queries_page(request: Request, current_user: User = Depends(get_curren
         else:
             query.created_at_local = "Unknown"
     
-    return templates.TemplateResponse("queries.html", {"request": request, "user": current_user, "queries": queries})
+    return templates.TemplateResponse(request, "queries.html", context={"user": current_user, "queries": queries})
 
 
 @app.get("/queries/add", response_class=HTMLResponse)
 async def add_query_form(request: Request, current_user: User = Depends(get_current_user)):
-    return templates.TemplateResponse("query_form.html", {"request": request, "user": current_user, "mode": "add"})
+    return templates.TemplateResponse(request, "query_form.html", context={"user": current_user, "mode": "add"})
 
 
 @app.post("/queries/add")
@@ -130,7 +130,7 @@ async def edit_query_form(request: Request, query_id: int, current_user: User = 
     if not query:
         raise HTTPException(status_code=404, detail="Query not found")
     
-    return templates.TemplateResponse("query_form.html", {"request": request, "user": current_user, "mode": "edit", "query": query})
+    return templates.TemplateResponse(request, "query_form.html", context={"user": current_user, "mode": "edit", "query": query})
 
 
 @app.post("/queries/{query_id}/edit")
@@ -182,17 +182,15 @@ async def test_query_endpoint(request: Request, name: str = Form(...), url: str 
     
     try:
         offers, has_more_results = test_query(clean_url, limit=5)
-        return templates.TemplateResponse("test_results.html", {
-            "request": request, 
-            "query": test_query_obj, 
+        return templates.TemplateResponse(request, "test_results.html", context={
+            "query": test_query_obj,
             "offers": offers,
             "has_more_results": has_more_results,
             "success": True
         })
     except Exception as e:
-        return templates.TemplateResponse("test_results.html", {
-            "request": request, 
-            "query": test_query_obj, 
+        return templates.TemplateResponse(request, "test_results.html", context={
+            "query": test_query_obj,
             "error": str(e),
             "success": False
         })
@@ -201,12 +199,12 @@ async def test_query_endpoint(request: Request, name: str = Form(...), url: str 
 @app.get("/notifications", response_class=HTMLResponse)
 async def notifications_page(request: Request, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     notifications = db.query(NotificationSetting).filter(NotificationSetting.user_id == current_user.id).all()
-    return templates.TemplateResponse("notifications.html", {"request": request, "user": current_user, "notifications": notifications})
+    return templates.TemplateResponse(request, "notifications.html", context={"user": current_user, "notifications": notifications})
 
 
 @app.get("/notifications/add", response_class=HTMLResponse)
 async def add_notification_form(request: Request, current_user: User = Depends(get_current_user)):
-    return templates.TemplateResponse("notification_form.html", {"request": request, "user": current_user, "mode": "add"})
+    return templates.TemplateResponse(request, "notification_form.html", context={"user": current_user, "mode": "add"})
 
 
 @app.post("/notifications/add")
@@ -223,7 +221,7 @@ async def edit_notification_form(request: Request, notification_id: int, current
     if not notification:
         raise HTTPException(status_code=404, detail="Notification setting not found")
     
-    return templates.TemplateResponse("notification_form.html", {"request": request, "user": current_user, "mode": "edit", "notification": notification})
+    return templates.TemplateResponse(request, "notification_form.html", context={"user": current_user, "mode": "edit", "notification": notification})
 
 
 @app.post("/notifications/{notification_id}/edit")
@@ -285,29 +283,25 @@ async def test_notification_endpoint(request: Request, discord_webhook_url: str 
                                timeout=10)
         
         if response.status_code == 204:
-            return templates.TemplateResponse("notification_test_results.html", {
-                "request": request,
+            return templates.TemplateResponse(request, "notification_test_results.html", context={
                 "success": True,
                 "message": "Test notification sent successfully! Check your Discord channel."
             })
         else:
             raise Exception(f"Discord returned status {response.status_code}: {response.text}")
-            
+
     except requests.exceptions.Timeout:
-        return templates.TemplateResponse("notification_test_results.html", {
-            "request": request,
+        return templates.TemplateResponse(request, "notification_test_results.html", context={
             "success": False,
             "error": "Request timed out. Please check your webhook URL."
         })
     except requests.exceptions.RequestException as e:
-        return templates.TemplateResponse("notification_test_results.html", {
-            "request": request,
+        return templates.TemplateResponse(request, "notification_test_results.html", context={
             "success": False,
             "error": f"Network error: {str(e)}"
         })
     except Exception as e:
-        return templates.TemplateResponse("notification_test_results.html", {
-            "request": request,
+        return templates.TemplateResponse(request, "notification_test_results.html", context={
             "success": False,
             "error": str(e)
         })
