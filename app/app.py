@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from database import get_db
 from models import User, SearchQuery, NotificationSetting
-from auth import authenticate_user, get_current_user, get_password_hash
+from auth import authenticate_user, get_current_user, get_password_hash, NotAuthenticatedError
 from scraper import test_query
 
 app = FastAPI(title="Rent Scraper")
@@ -29,6 +29,27 @@ async def startup_event():
 BASE_DIR = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+
+@app.exception_handler(NotAuthenticatedError)
+async def not_authenticated_handler(request: Request, exc: NotAuthenticatedError):
+    return RedirectResponse(url="/login", status_code=303)
+
+
+@app.exception_handler(404)
+async def not_found_handler(request: Request, exc: HTTPException):
+    return templates.TemplateResponse(request, "error.html", context={
+        "status_code": 404,
+        "message": "The page you're looking for doesn't exist.",
+    }, status_code=404)
+
+
+@app.exception_handler(500)
+async def internal_error_handler(request: Request, exc: Exception):
+    return templates.TemplateResponse(request, "error.html", context={
+        "status_code": 500,
+        "message": "Something went wrong on our end. Please try again.",
+    }, status_code=500)
 
 
 def format_relative_time(dt: datetime) -> str:

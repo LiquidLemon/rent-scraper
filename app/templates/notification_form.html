@@ -24,12 +24,13 @@
                 {% if mode == 'add' %}Add Webhook{% else %}Update Webhook{% endif %}
             </button>
             
-            <button type="button" 
-                    hx-post="/notifications/test" 
+            <button type="button"
+                    id="test-webhook-btn"
+                    hx-post="/notifications/test"
                     hx-include="form"
-                    hx-target="#test-results" 
-                    hx-indicator="#loading"
+                    hx-target="#test-results"
                     style="background: #7289da;">
+                <span class="spinner"></span>
                 Test Webhook
             </button>
             
@@ -38,11 +39,6 @@
             </a>
         </div>
     </form>
-    
-    <!-- Loading indicator -->
-    <div id="loading" class="htmx-indicator" style="text-align: center; color: #666; padding: 20px;">
-        🔄 Testing webhook, please wait...
-    </div>
     
     <!-- Test Results Section -->
     <div id="test-results"></div>
@@ -71,12 +67,15 @@
     </div>
 </div>
 
-<style>
-.htmx-indicator {
-    display: none;
-}
-.htmx-request .htmx-indicator {
-    display: block;
-}
-</style>
+<script>
+    document.getElementById('test-webhook-btn').addEventListener('htmx:confirm', function(event) {
+        var url = document.getElementById('discord_webhook_url').value.trim();
+        if (!url) {
+            event.preventDefault();
+            document.getElementById('test-results').innerHTML =
+                '<div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 4px; color: #721c24; margin-top: 10px;">' +
+                'Please enter a webhook URL before testing.</div>';
+        }
+    });
+</script>
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ status_code }} - Rent Scraper{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 60px 20px;">
+    <h1 style="font-size: 48px; margin-bottom: 10px; color: #6c757d;">{{ status_code }}</h1>
+    <p style="font-size: 18px; color: #555; margin-bottom: 30px;">{{ message }}</p>
+    <a href="/">
+        <button style="background: #007bff;">Back to Dashboard</button>
+    </a>
+</div>
+{% endblock %}

@@ -1,5 +1,4 @@
-from fastapi import Request, HTTPException, status, Depends
-from fastapi.responses import RedirectResponse
+from fastapi import Request, Depends
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from models import User
@@ -23,19 +22,17 @@ def authenticate_user(db: Session, username: str, password: str):
     return user
 
 
+class NotAuthenticatedError(Exception):
+    pass
+
+
 def get_current_user(request: Request, db: Session = Depends(get_db)):
     user_id = request.session.get("user_id")
     if not user_id:
-        raise HTTPException(
-            status_code=status.HTTP_302_FOUND,
-            headers={"Location": "/login"}
-        )
-    
+        raise NotAuthenticatedError()
+
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         request.session.clear()
-        raise HTTPException(
-            status_code=status.HTTP_302_FOUND,
-            headers={"Location": "/login"}
-        )
+        raise NotAuthenticatedError()
     return user

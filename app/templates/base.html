@@ -13,12 +13,32 @@
         textarea { font-family: monospace; line-height: 1.4; }
         button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; }
         button:hover { background: #0056b3; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
         .error { color: #dc3545; margin-top: 5px; }
+        .spinner { display: inline-block; width: 0; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; overflow: hidden; opacity: 0; transition: width 0.15s, opacity 0.15s, margin 0.15s; }
+        .htmx-request .spinner { width: 14px; opacity: 1; margin-right: 6px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
         .nav { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
         .nav a { margin-right: 15px; text-decoration: none; color: #007bff; }
         .nav a:hover { text-decoration: underline; }
     </style>
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script>
+        document.addEventListener('htmx:responseError', function(event) {
+            var target = event.detail.target;
+            if (target) {
+                target.innerHTML = '<div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 4px; color: #721c24; margin-top: 10px;">Something went wrong. Please check your input and try again.</div>';
+            }
+        });
+        document.addEventListener('htmx:beforeRequest', function(event) {
+            var btn = event.detail.elt;
+            if (btn.tagName === 'BUTTON') btn.disabled = true;
+        });
+        document.addEventListener('htmx:afterRequest', function(event) {
+            var btn = event.detail.elt;
+            if (btn.tagName === 'BUTTON') btn.disabled = false;
+        });
+    </script>
 </head>
 <body>
     <div class="container">

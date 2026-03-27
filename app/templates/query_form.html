@@ -35,12 +35,13 @@
                 {% if mode == 'add' %}Add Query{% else %}Update Query{% endif %}
             </button>
             
-            <button type="button" 
-                    hx-post="/queries/test" 
+            <button type="button"
+                    id="test-query-btn"
+                    hx-post="/queries/test"
                     hx-include="form"
-                    hx-target="#test-results" 
-                    hx-indicator="#loading"
+                    hx-target="#test-results"
                     style="background: #17a2b8;">
+                <span class="spinner"></span>
                 Test Query
             </button>
             
@@ -49,11 +50,6 @@
             </a>
         </div>
     </form>
-    
-    <!-- Loading indicator -->
-    <div id="loading" class="htmx-indicator" style="text-align: center; color: #666; padding: 20px;">
-        🔄 Testing query, please wait...
-    </div>
     
     <!-- Test Results Section -->
     <div id="test-results"></div>
@@ -112,12 +108,16 @@
     </div>
 </div>
 
-<style>
-.htmx-indicator {
-    display: none;
-}
-.htmx-request .htmx-indicator {
-    display: block;
-}
-</style>
+<script>
+    document.getElementById('test-query-btn').addEventListener('htmx:confirm', function(event) {
+        var name = document.getElementById('name').value.trim();
+        var url = document.getElementById('url').value.trim();
+        if (!name || !url) {
+            event.preventDefault();
+            document.getElementById('test-results').innerHTML =
+                '<div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 4px; color: #721c24; margin-top: 10px;">' +
+                'Please fill in both the query name and URL before testing.</div>';
+        }
+    });
+</script>
 {% endblock %}
