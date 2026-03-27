@@ -13,8 +13,8 @@ dependencies = [
     "python-multipart",
     "sqlalchemy",
     "alembic",
-    "passlib[bcrypt]",
     "itsdangerous",
+    "bcrypt>=5.0.0",
 ]
 
 [dependency-groups]

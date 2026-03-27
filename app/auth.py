@@ -1,18 +1,16 @@
 from fastapi import Request, Depends
-from passlib.context import CryptContext
+import bcrypt
 from sqlalchemy.orm import Session
 from models import User
 from database import get_db
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+    return bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
 
 
 def get_password_hash(password):
-    return pwd_context.hash(password)
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 
 def authenticate_user(db: Session, username: str, password: str):
